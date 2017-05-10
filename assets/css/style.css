@@ -11,3 +11,10 @@ h1
 	font-size: 2em;
 	font-weight: bold;
 }
+
+.container
+{
+	width: 50%;
+	margin: 10px auto;
+	background-color: red;
+}
