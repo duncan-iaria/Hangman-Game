@@ -11,6 +11,7 @@ window.addEventListener( "keydown", function( e )
 //define hangman game object
 var hangMan = 
 {
+    isEnabled: false,
     maxTurns: 12,
     currentTurn: 0,
 
@@ -23,10 +24,14 @@ var hangMan =
     //check what button was pressed
     checkKeyInput: function( keyEvent )
     {
-    	this.currentTurn--;
-    	console.log( keyEvent.key + " - " + this.currentTurn );
+        //if the game is enabled, evaluate key presses
+        if( this.isEnabled )
+        {
+            this.currentTurn--;
+            console.log( keyEvent.key + " - " + this.currentTurn );
 
-    	this.evaluteWinCondition();
+            this.evaluteWinCondition();
+        }
     },
 
     //check if you've won or lost

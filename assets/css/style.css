@@ -3,18 +3,68 @@
 /*GLOBAL*/
 body
 {
-	font-size: 14px;
+	font-size: 16px;
 }
 
 h1
 {
-	font-size: 2em;
+	font-size: 3em;
 	font-weight: bold;
+}
+
+header
+{
+	text-align: center;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+section
+{
 }
 
 .container
 {
-	width: 50%;
+	width: 60%;
 	margin: 10px auto;
-	background-color: red;
+	/*background-color: red;*/
 }
+
+.feedback-img
+{
+	width: calc( 60% - 1px );
+	height: 300px;
+	float: left;
+	border-right: 1px #333 solid;
+}
+
+.guessed-letters
+{
+	width: 40%;
+	height: 300px;
+	float: right;
+}
+
+.word
+{
+	margin-top: 20px;
+	padding: 20px;
+	clear: both;
+	height: 100px;
+
+	text-align: center;
+}
+
+.word > h1
+{
+	letter-spacing: 8px;
+}
+
+.letter-box
+{
+	letter-spacing: 8px;
+	width: 70%;
+	margin: 0 auto;
+	text-align: center;
+}
+
