@@ -1,7 +1,10 @@
-//================================
+//################################
 // hangman game by duncan iaria
+//################################
+console.log( pokedex[ 4 ] );
 //================================
-
+// EVENTS
+//================================
 //set up global key listener
 window.addEventListener( "keydown", function( e )
 {
@@ -20,6 +23,9 @@ window.addEventListener( "load", function()
     );
 });
 
+//================================
+// GAME
+//================================
 //define hangman game object
 var hangMan = 
 {
@@ -62,11 +68,6 @@ var hangMan =
         {
             this.currentLetters.push( this.currentWord.charAt( i ) );
         }
-
-        // for( var i = this.currentWord.length - 1; i >= 0; --i )
-        // {
-        //     this.currentLetters.push( this.currentWord.charAt( i ) );
-        // }
 
         console.log( this.currentLetters );
     },
@@ -144,7 +145,7 @@ var hangMan =
             }
         }
 
-        this.currentWordView.textContent = tempWord;
+        this.currentWordView.innerHTML = `<h1>${tempWord}</h1>`;
     },
 
     //check if you've won or lost

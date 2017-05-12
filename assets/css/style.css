@@ -4,11 +4,14 @@
 body
 {
 	font-size: 16px;
+	color: #444;
+	font-family: 'Poppins', sans-serif;
 }
 
 h1
 {
 	font-size: 3em;
+	font-family: 'Josefin Slab', serif;
 	font-weight: bold;
 }
 
@@ -51,8 +54,6 @@ section
 
 #current-word-view
 {
-	height: 100px;
-
 	margin-top: 20px;
 	padding: 20px;
 
@@ -63,6 +64,7 @@ section
 
 #current-word-view > h1
 {
+	padding: 20px;
 	letter-spacing: 8px;
 }
 
@@ -76,3 +78,22 @@ section
 	line-height: 2em;
 }
 
+#poke-bank
+{
+	width: 100%;
+}
+
+.poke-container
+{
+	display: inline-block;
+	width: 120px;
+	height: 120px;
+	background-color: blue;
+	
+	border-radius: 50%;
+	margin: 10px;
+}
+
+.poke-container > img
+{
+}
