@@ -14,9 +14,10 @@ h1
 
 header
 {
-	text-align: center;
 	padding: 10px;
 	margin-bottom: 20px;
+	
+	text-align: center;
 }
 
 section
@@ -34,7 +35,9 @@ section
 {
 	width: calc( 60% - 1px );
 	height: 300px;
+
 	float: left;
+
 	border-right: 1px #333 solid;
 }
 
@@ -42,29 +45,34 @@ section
 {
 	width: 40%;
 	height: 300px;
+
 	float: right;
 }
 
-.word
+#current-word-view
 {
+	height: 100px;
+
 	margin-top: 20px;
 	padding: 20px;
+
 	clear: both;
-	height: 100px;
 
 	text-align: center;
 }
 
-.word > h1
+#current-word-view > h1
 {
 	letter-spacing: 8px;
 }
 
-.letter-box
+#guessed-letter-view
 {
-	letter-spacing: 8px;
 	width: 70%;
 	margin: 0 auto;
 	text-align: center;
+	margin-top: 60px;
+	letter-spacing: 10px;
+	line-height: 2em;
 }
 
