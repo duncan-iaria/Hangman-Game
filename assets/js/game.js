@@ -8,7 +8,7 @@ window.addEventListener( "keydown", function( e )
 	hangMan.checkKeyInput( e );
 });
 
-//start game after page load
+//start game after page load (so it can get all the dom elements (div id's and such))
 window.addEventListener( "load", function()
 {
     console.log( "document loaded" );
@@ -24,7 +24,7 @@ window.addEventListener( "load", function()
 var hangMan = 
 {
     //game variables
-    isEnabled: false,
+    isEnabled: true,
     maxTurns: 12,
     currentTurn: 0,
     currentWord: "",
@@ -36,7 +36,8 @@ var hangMan =
     //data
     possibleWords: ["one", "two", "three"],
     guessedLetters: [],
-    currentLetters: [],
+    currentLetters: [], //the letters you need to guess
+    correctLetters: [], //the correct letters you HAVE guessed
 
 
     //initialize the game
@@ -52,6 +53,22 @@ var hangMan =
 
         console.log( "current word = " + this.currentWord );
         console.log( this.currentWordView );
+
+        //clear the current letters array
+        this.currentLetters.length = 0;
+
+        //populate the current letters array with the letters from our current word
+        for( var i = 0; i < this.currentWord.length; ++i )
+        {
+            this.currentLetters.push( this.currentWord.charAt( i ) );
+        }
+
+        // for( var i = this.currentWord.length - 1; i >= 0; --i )
+        // {
+        //     this.currentLetters.push( this.currentWord.charAt( i ) );
+        // }
+
+        console.log( this.currentLetters );
     },
 
     //check what button was pressed
@@ -60,11 +77,74 @@ var hangMan =
         //if the game is enabled, evaluate key presses
         if( this.isEnabled )
         {
+            console.log( this.guessedLetters.indexOf( keyEvent.key ) );
+
+            if( this.guessedLetters.indexOf( keyEvent.key ) >= 0 )
+            {
+                //already guessed this letter
+                return;
+            }
+            else
+            {
+                var isCorrect = false;
+
+                for( var i = this.currentLetters.length - 1; i >= 0; --i )
+                {
+                    if( keyEvent.key === this.currentLetters[i] )
+                    {
+                        //we have a match - add to the correct letters array in proper place
+                        this.correctLetters[i] = keyEvent.key;
+
+                         console.log( "correct letter array = " + this.correctLetters );
+
+                        //notify that a match was found
+                        isCorrect = true;
+                    }
+                }
+
+                //if a match was NOT found
+                if( isCorrect )
+                {
+                    //update view
+                    this.updateCurrentWordView();
+                }
+                else
+                {
+                    console.log("wrong, adding key to the guessed letters view")
+                    //add this key to the guessedLetters array
+                    this.guessedLetters.push( keyEvent.key );
+
+                    //add the key to the text contetn
+                    this.guessedLettersView.textContent += ( " " + keyEvent.key );
+                }
+            }
+
             this.currentTurn--;
+
             console.log( keyEvent.key + " - " + this.currentTurn );
 
             this.evaluteWinCondition();
         }
+    },
+
+    //updates the current word display
+    updateCurrentWordView: function()
+    {
+        var tempWord = "";
+
+        for( var i = 0; i < this.currentLetters.length; i++ )
+        {
+            if( this.correctLetters[i] != undefined )
+            {
+                tempWord += " " + this.correctLetters[i] + " ";
+            }
+            else
+            {
+                tempWord += " _ ";
+            }
+        }
+
+        this.currentWordView.textContent = tempWord;
     },
 
     //check if you've won or lost
@@ -76,6 +156,7 @@ var hangMan =
     	}
     },
 
+    //UTILITY
     getRandomInt: function ( min, max ) 
     {
         min = Math.ceil(min);
