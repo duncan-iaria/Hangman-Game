@@ -78,22 +78,38 @@ section
 	line-height: 2em;
 }
 
-#poke-bank
+#poke-bank-view
 {
 	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: left;
+	/*background-color: red;*/
 }
 
 .poke-container
 {
-	display: inline-block;
-	width: 120px;
+	text-align: center;
+	margin: 10px 2.333%;
+
+	width: 20%;
 	height: 120px;
-	background-color: blue;
-	
-	border-radius: 50%;
-	margin: 10px;
 }
 
-.poke-container > img
+.poke-ball
 {
+	margin: 0px auto;
+	height: 100px;
+	width: 100px;
+
+	background-image: url( "../images/pokeball-bg-xs.png" );
+	background-size: contain;
+
+	/*background-color: red;*/
+	border-radius: 50%;
+}
+
+.poke-ball > img
+{
+	margin-top: 10px;
 }

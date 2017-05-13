@@ -19,7 +19,8 @@ window.addEventListener( "load", function()
     hangMan.setViews
     (
         document.querySelector( "#current-word-view" ),
-        document.querySelector( "#guessed-letter-view" )
+        document.querySelector( "#guessed-letter-view" ),
+        document.querySelector( "#poke-bank-view")
     );
 
     //start hangman
@@ -37,10 +38,12 @@ var hangMan =
     maxTurns: 12,
     currentTurn: 0,
     currentWord: "",
+    currentPokemon: null,
 
     //views
     currentWordView: null,
     guessedLettersView: null,
+    pokeBankView: null,
 
     //specific game data
     guessedLetters: [],
@@ -58,7 +61,8 @@ var hangMan =
 
         //establish data
     	this.currentTurn = this.maxTurns;
-        this.currentWord = data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ].name.toLowerCase();
+        this.currentPokemon = data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ];
+        this.currentWord = this.currentPokemon.name.toLowerCase();
         //console.log( data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ] );
 
         console.log( "current word = " + this.currentWord );
@@ -80,11 +84,12 @@ var hangMan =
         console.log( this.currentLetters );
     },
 
-    setViews: function( tCurrentWordView, tGuessedLettersView )
+    setViews: function( tCurrentWordView, tGuessedLettersView, tPokebankView )
     {
         //hook up views
         this.currentWordView = tCurrentWordView;
         this.guessedLettersView = tGuessedLettersView;
+        this.pokeBankView = tPokebankView;
     },
 
     //check what button was pressed
@@ -165,6 +170,7 @@ var hangMan =
         this.currentWordView.innerHTML = `<h1> ${ tempWord } </h1>`;
     },
 
+    //shows the user what letters have already been guessed
     updateGuessedLettersView: function()
     {
         //clear current guessed letters view
@@ -174,6 +180,19 @@ var hangMan =
         {
             this.guessedLettersView.textContent += " " + this.guessedLetters[i];
         }
+    },
+
+    //adds pokemon to your collection! ID is the id of the pokemon to add (the image name)
+    updatePokeBankView: function( tIdToAdd )
+    {
+        //add the following HTML to the pokebank
+        //tIdToAdd is the id of the pokemon (and the name of the corresponding gif)
+        this.pokeBankView.innerHTML +=
+        `<div class="poke-container">
+            <div class="poke-ball">
+                    <img src="assets/images/${tIdToAdd}.gif"/>
+            </div>
+        </div>`;
     },
 
     //check if you've won or lost
@@ -205,6 +224,7 @@ var hangMan =
 
     onWin: function()
     {
+        this.updatePokeBankView( this.currentPokemon.id );
         alert( "you WIN!" );
         this.init();
     },
