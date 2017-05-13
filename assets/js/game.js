@@ -1,7 +1,7 @@
 //################################
 // hangman game by duncan iaria
 //################################
-console.log( pokedex[ 4 ] );
+console.log( data.pokedex[ 4 ] );
 //================================
 // EVENTS
 //================================
@@ -15,12 +15,15 @@ window.addEventListener( "keydown", function( e )
 window.addEventListener( "load", function()
 {
     console.log( "document loaded" );
-    //init hangman game with starting values and pass in views
-    hangMan.init
+    //pass the views to the hangman game
+    hangMan.setViews
     (
         document.querySelector( "#current-word-view" ),
         document.querySelector( "#guessed-letter-view" )
     );
+
+    //start hangman
+    hangMan.init();
 });
 
 //================================
@@ -39,23 +42,24 @@ var hangMan =
     currentWordView: null,
     guessedLettersView: null,
 
-    //data
-    possibleWords: ["one", "two", "three"],
+    //specific game data
     guessedLetters: [],
     currentLetters: [], //the letters you need to guess
     correctLetters: [], //the correct letters you HAVE guessed
 
 
     //initialize the game
-    init: function( tCurrentWordView, tGuessedLettersView )
+    init: function()
     {
+        //clear game data (mostly for resetting the game)
+        this.guessedLetters.length = 0;
+        this.currentLetters.length = 0;
+        this.correctLetters.length = 0;
+
         //establish data
     	this.currentTurn = this.maxTurns;
-        this.currentWord = this.possibleWords[ this.getRandomInt( 0, this.possibleWords.length ) ];
-
-        //hook up views
-        this.currentWordView = tCurrentWordView;
-        this.guessedLettersView = tGuessedLettersView;
+        this.currentWord = data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ].name.toLowerCase();
+        //console.log( data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ] );
 
         console.log( "current word = " + this.currentWord );
         console.log( this.currentWordView );
@@ -69,7 +73,18 @@ var hangMan =
             this.currentLetters.push( this.currentWord.charAt( i ) );
         }
 
+        //resets the displays
+        this.updateCurrentWordView();
+        this.updateGuessedLettersView();
+
         console.log( this.currentLetters );
+    },
+
+    setViews: function( tCurrentWordView, tGuessedLettersView )
+    {
+        //hook up views
+        this.currentWordView = tCurrentWordView;
+        this.guessedLettersView = tGuessedLettersView;
     },
 
     //check what button was pressed
@@ -111,16 +126,18 @@ var hangMan =
                 }
                 else
                 {
-                    console.log("wrong, adding key to the guessed letters view")
+                    console.log( "wrong, adding key to the guessed letters view" );
                     //add this key to the guessedLetters array
                     this.guessedLetters.push( keyEvent.key );
 
                     //add the key to the text contetn
-                    this.guessedLettersView.textContent += ( " " + keyEvent.key );
+                    this.updateGuessedLettersView();
+
+                    //iterate this - remain to mssed?
+                    this.currentTurn--;
                 }
             }
 
-            this.currentTurn--;
 
             console.log( keyEvent.key + " - " + this.currentTurn );
 
@@ -145,16 +162,57 @@ var hangMan =
             }
         }
 
-        this.currentWordView.innerHTML = `<h1>${tempWord}</h1>`;
+        this.currentWordView.innerHTML = `<h1> ${ tempWord } </h1>`;
+    },
+
+    updateGuessedLettersView: function()
+    {
+        //clear current guessed letters view
+        this.guessedLettersView.textContent = "";
+
+        for( var i = 0; i < this.guessedLetters.length; ++i )
+        {
+            this.guessedLettersView.textContent += " " + this.guessedLetters[i];
+        }
     },
 
     //check if you've won or lost
     evaluteWinCondition: function()
     {
+        var isWin = true;
+
+        for( var i = this.currentLetters.length - 1; i >= 0; --i )
+        {
+            if( this.correctLetters[i] != this.currentLetters[i] )
+            {
+                //something doesn't match, so it's not a win
+                isWin = false;
+            }
+        }
+
+        //if we've won
+        if( isWin )
+        {
+            setTimeout( this.onWin(), 200 );
+        }
+
+        //if we've lost
     	if( this.currentTurn <= 0 )
     	{
-    		alert( "you lose" );
+    		this.onLose();
     	}
+    },
+
+    onWin: function()
+    {
+        alert( "you WIN!" );
+        this.init();
+    },
+
+    onLose: function()
+    {
+        alert( "you lose" );
+        this.init();
     },
 
     //UTILITY
