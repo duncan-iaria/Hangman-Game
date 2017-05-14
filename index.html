@@ -9,12 +9,34 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<script type="text/javascript" src="assets/js/data.js"></script>
+	<script type="text/javascript" src="assets/js/modal.js"></script>
 	<script type="text/javascript" src="assets/js/game.js"></script>
 </head>
 
 <body>
-	<div class="container">
+	<!-- MODAL -->
+	<section id="modal-bg-id" class="modal-bg">
+		<div id="modal-id" class="modal">
+			<div class="modal-label-container">
+				<h1 id="modal-label">Ready to Play?</h1>
+				<hr/>
+			</div>
 
+			<div class="modal-img-container">
+				<img id="modal-img" src="assets/images/1.gif"/>
+			</div>
+
+			<div class="modal-text-container">
+				<p id="modal-text">Press any key to guess a letter</p>
+			</div>
+			<button id="modal-no" class="modal-btn btn-no">Scared</button>
+			<button id="modal-yes" class="modal-btn btn-yes">Ready</button>
+		</div>
+		
+	</section>
+
+	<!-- MAIN CONTENT -->
+	<div class="container">
 		<!-- HEADER -->
 		<header>
 			<h1>HANG 'MON</h1>
@@ -25,14 +47,14 @@
 
 		<!-- IMAGE SECTION -->
 		<section class="feedback-img">
-			
+			<img id="feedback-view" src="assets/images/pika0.png">
 		</section>
 
 		<!-- GUESSED LETTERS SECTION -->
 		<section class="guessed-letters">
+			<h3>Guessed Letters</h3>
 			<div id="guessed-letter-view">
 			</div>
-				
 		</section>
 
 		<!-- WORD GUESS SECTION -->

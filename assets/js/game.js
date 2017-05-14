@@ -1,7 +1,6 @@
 //################################
 // hangman game by duncan iaria
 //################################
-console.log( data.pokedex[ 4 ] );
 //================================
 // EVENTS
 //================================
@@ -20,11 +19,12 @@ window.addEventListener( "load", function()
     (
         document.querySelector( "#current-word-view" ),
         document.querySelector( "#guessed-letter-view" ),
-        document.querySelector( "#poke-bank-view")
+        document.querySelector( "#poke-bank-view"),
+        document.querySelector( "#feedback-view" )
     );
 
     //start hangman
-    hangMan.init();
+    //hangMan.init();
 });
 
 //================================
@@ -34,8 +34,8 @@ window.addEventListener( "load", function()
 var hangMan = 
 {
     //game variables
-    isEnabled: true,
-    maxTurns: 12,
+    isEnabled: false,
+    maxTurns: 10,
     currentTurn: 0,
     currentWord: "",
     currentPokemon: null,
@@ -44,6 +44,7 @@ var hangMan =
     currentWordView: null,
     guessedLettersView: null,
     pokeBankView: null,
+    feedbackView: null,
 
     //specific game data
     guessedLetters: [],
@@ -60,13 +61,13 @@ var hangMan =
         this.correctLetters.length = 0;
 
         //establish data
-    	this.currentTurn = this.maxTurns;
+    	this.currentTurn = 0;
         this.currentPokemon = data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ];
         this.currentWord = this.currentPokemon.name.toLowerCase();
         //console.log( data.pokedex[ this.getRandomInt( 0, data.pokedex.length ) ] );
 
-        console.log( "current word = " + this.currentWord );
-        console.log( this.currentWordView );
+        //console.log( "current word = " + this.currentWord );
+        //console.log( this.currentWordView );
 
         //clear the current letters array
         this.currentLetters.length = 0;
@@ -80,16 +81,11 @@ var hangMan =
         //resets the displays
         this.updateCurrentWordView();
         this.updateGuessedLettersView();
+        this.updateFeedbackView();
 
-        console.log( this.currentLetters );
-    },
-
-    setViews: function( tCurrentWordView, tGuessedLettersView, tPokebankView )
-    {
-        //hook up views
-        this.currentWordView = tCurrentWordView;
-        this.guessedLettersView = tGuessedLettersView;
-        this.pokeBankView = tPokebankView;
+        //THIS IS KEY
+        this.isEnabled = true;
+        //console.log( this.currentLetters );
     },
 
     //check what button was pressed
@@ -98,11 +94,16 @@ var hangMan =
         //if the game is enabled, evaluate key presses
         if( this.isEnabled )
         {
-            console.log( this.guessedLetters.indexOf( keyEvent.key ) );
+            //console.log( this.guessedLetters.indexOf( keyEvent.key ) );
 
             if( this.guessedLetters.indexOf( keyEvent.key ) >= 0 )
             {
                 //already guessed this letter
+                return;
+            }
+            else if( keyEvent.key.length > 1 )
+            {   
+                //a character key was pressed (like cntrl or something)
                 return;
             }
             else
@@ -135,11 +136,12 @@ var hangMan =
                     //add this key to the guessedLetters array
                     this.guessedLetters.push( keyEvent.key );
 
-                    //add the key to the text contetn
-                    this.updateGuessedLettersView();
-
                     //iterate this - remain to mssed?
-                    this.currentTurn--;
+                    this.currentTurn++;
+
+                    //add the key to the text content
+                    this.updateGuessedLettersView();
+                    this.updateFeedbackView();
                 }
             }
 
@@ -148,6 +150,19 @@ var hangMan =
 
             this.evaluteWinCondition();
         }
+    },
+
+    //====================
+    // VIEWS
+    //====================
+    //setup the initial views
+    setViews: function( tCurrentWordView, tGuessedLettersView, tPokebankView, tFeedbackView )
+    {
+        //hook up views
+        this.currentWordView = tCurrentWordView;
+        this.guessedLettersView = tGuessedLettersView;
+        this.pokeBankView = tPokebankView;
+        this.feedbackView = tFeedbackView;
     },
 
     //updates the current word display
@@ -195,6 +210,14 @@ var hangMan =
         </div>`;
     },
 
+    updateFeedbackView: function()
+    {
+        this.feedbackView.src = `assets/images/pika${this.currentTurn}.png`;
+    },
+
+    //====================
+    // RESOLUTION
+    //====================
     //check if you've won or lost
     evaluteWinCondition: function()
     {
@@ -212,30 +235,56 @@ var hangMan =
         //if we've won
         if( isWin )
         {
-            setTimeout( this.onWin(), 200 );
+            setTimeout( hangMan.onWin.bind( this ), 200 );
         }
-
-        //if we've lost
-    	if( this.currentTurn <= 0 )
+        else if( this.currentTurn >= 10 )
     	{
-    		this.onLose();
+    		setTimeout( hangMan.onLose.bind( this ), 200 );
     	}
     },
 
     onWin: function()
     {
-        this.updatePokeBankView( this.currentPokemon.id );
-        alert( "you WIN!" );
-        this.init();
+        //this.updatePokeBankView( this.currentPokemon.id );
+
+        this.isEnabled = false;
+
+        var rightButtonEvents = [ this.init.bind( this ) ];
+
+        modal.openModal
+        ( 
+            "YOU WON!", 
+            `You caught a ${this.currentPokemon.name}!`, 
+            `assets/images/${this.currentPokemon.id}.gif`,
+            rightButtonEvents,
+            null,
+            500
+        );
+
+        setTimeout( this.updatePokeBankView.bind( this, this.currentPokemon.id), 500 );
     },
 
     onLose: function()
     {
-        alert( "you lose" );
-        this.init();
+        this.isEnabled = false;
+
+        var rightButtonEvents = [ this.init.bind( this ) ];
+
+        modal.openModal
+        ( 
+            "YOU LOST!", 
+            `You did not catch ${this.currentPokemon.name}, ready to try again?`, 
+            null,
+            rightButtonEvents,
+            null,
+            1000
+        );
+
     },
 
-    //UTILITY
+    //====================
+    // UTILITIES
+    //====================
     getRandomInt: function ( min, max ) 
     {
         min = Math.ceil(min);
