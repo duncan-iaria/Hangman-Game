@@ -265,7 +265,7 @@ var hangMan =
         modal.openModal
         ( 
             "YOU WON!", 
-            `You caught a ${this.currentPokemon.name}!`, 
+            `${this.currentPokemon.name} was caught!` , 
             `assets/images/${this.currentPokemon.id}.gif`,
             rightButtonEvents,
             null,
