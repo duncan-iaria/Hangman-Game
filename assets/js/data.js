@@ -48,20 +48,27 @@ var data =
 	pikachu: new Pokemon( 25, "Pikachu" ),
 	raichu: new Pokemon( 26, "Raichu" ),
 
+	sandshrew: new Pokemon( 27, "Sandshrew" ),
+	sandslash: new Pokemon( 28, "Sandslash" ),
+
 
  	//builds the pokedex based on the defined pokes
 	init: function()
 	{
-		this.pokedex = [ this.balbasaur, this.ivysaur, this.venusaur,
-					this.charmander, this.charmeleon, this.charizard,
-					this.squirtle, this.wartotle, this.blastoise,
-					 this.caterpie, this.metapod, this.butterfree,
-					 this.weedle, this.kakuna, this.beedrill, 
-					 this.pidgey, this.pidgeotto, this.pidgeot,
-					 this.rattata, this.raticate,
-					 this.spearow, this.fearow,
-					 this.ekans, this.arbok,
-					 this.pikachu, this.raichu ];
+		this.pokedex = 
+		[ 
+			this.balbasaur, this.ivysaur, this.venusaur,
+			this.charmander, this.charmeleon, this.charizard,
+			this.squirtle, this.wartotle, this.blastoise,
+			this.caterpie, this.metapod, this.butterfree,
+			this.weedle, this.kakuna, this.beedrill, 
+			this.pidgey, this.pidgeotto, this.pidgeot,
+			this.rattata, this.raticate,
+			this.spearow, this.fearow,
+			this.ekans, this.arbok,
+			this.pikachu, this.raichu,
+			this.sandshrew, this.sandslash
+		];
 	}
 }
 

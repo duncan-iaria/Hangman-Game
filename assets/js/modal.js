@@ -19,6 +19,7 @@ var modal =
 	//methods
 	init: function( tRightButton, tLeftButton, tModalBg, tModal, tModalLabel, tModalText, tModalImg )
 	{
+		//sav references to all the html element we'll be using
 		this.rightButton = tRightButton;
 		this.leftButton = tLeftButton;
 		this.modalBg = tModalBg;
@@ -27,14 +28,18 @@ var modal =
 		this.modalText = tModalText;
 		this.modalImg = tModalImg;
 
-		//pack the events for rightButton in an array so it can be applied all at once
-		var rightButtonEvents = [ this.closeModal.bind( this, 500 ), hangMan.init.bind( hangMan ) ];
+		//pack the events for rightButton in an array so it can be passed all at once in the function below
+		var rightButtonEvents = [ this.closeModal.bind( this, 750 ), hangMan.init.bind( hangMan ) ];
 
+		//open the modatl
 		this.openModal( "Ready to Play?", "Press a button to guess a letter!", null, rightButtonEvents, null, 0 );
 	},
 
+	//opens the modal with the passed parameters
 	openModal: function( tLabelMessage, tMessage, tImage, tRightBtnActionsArr, tLeftBtnActionsArr, tTransitionTime )
 	{
+		//sets the transition to match the tTransitionTime parameter
+		//this is essential so that the modal appears when the bg transition is over
 		this.modalBg.style.transition = `all ${tTransitionTime/1000}s`;
 		this.modalBg.style.opacity = 1;
 
@@ -48,6 +53,7 @@ var modal =
 			this.modalImg.src = tImage;
 			this.modalImg.style.display = "inline-block"; 
 		}
+		//do not display the image - as one is not assigned
 		else
 		{
 			this.modalImg.style.display = "none";
@@ -77,8 +83,10 @@ var modal =
 			this.leftButton.style.display = "none";
 		}
 
-		//turn the actual modal on
+		//turn the actual modal on after the transition time has concluded
 		setTimeout( this.showModal.bind( this ), tTransitionTime );
+
+		//debugger
 	},
 
 	//hook up an array of events to a target DOM element
@@ -86,6 +94,7 @@ var modal =
 	{
 		if( tEventsArr != null )
 		{
+			//make sure it's not am empty array
 			if( tEventsArr.length > 0 )
 			{
 				for( var i = tEventsArr.length; i >= 0; --i )
@@ -96,6 +105,7 @@ var modal =
 		}
 	},
 
+	//remove an event listener from an html element (for resetting purposess)
 	detatchEvents: function( tTarget, tEventType, tEventListener )
 	{
 		if( tTarget != null )
@@ -104,11 +114,13 @@ var modal =
 		}
 	},
 
+	//turn the actual modal on (no the bg, but the modal itself)
 	showModal: function()
 	{
 		this.modal.style.display = "block";
 	},
 
+	//close the modal (detach all event listeners, start bg transition)
 	closeModal: function( tTransitionTime )
 	{	
 		//remove the event listeners (so new ones can be assigned)
@@ -120,7 +132,10 @@ var modal =
 		//this sets the css transition duration ( /1000 so convert from ms to secs )
 		this.modalBg.style.transition = `all ${tTransitionTime / 1000}s`;
 
+		//turn actual modal off
 		this.modal.style.display = "none";
+
+		//start background fadeout
 		this.modalBg.style.opacity = 0;
 	}
 }
@@ -131,6 +146,7 @@ var modal =
 //initialize the modal
 window.addEventListener( "load", function()
 {
+	//pass in all the html elements (that need to be controlled/updated)
 	modal.init
 	(
 		document.querySelector( "#modal-yes" ),
