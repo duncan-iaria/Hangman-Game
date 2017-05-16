@@ -1,7 +1,26 @@
 //================================
-// MODAL
+// MODAL - by duncan iaria
+// this controls the modal window that appears
 //================================
-//this controls the modal window that appears
+
+//================================
+// START
+//================================
+//initialize the modal
+window.addEventListener( "load", function()
+{
+	//pass in all the html elements (that need to be controlled/updated)
+	modal.init
+	(
+		document.querySelector( "#modal-yes" ),
+		document.querySelector( "#modal-no" ),
+		document.querySelector( "#modal-bg-id" ),
+		document.querySelector( "#modal-id" ),
+		document.querySelector( "#modal-label" ),
+		document.querySelector( "#modal-text" ),
+		document.querySelector( "#modal-img" )
+	);
+});
 
 var modal = 
 {
@@ -139,22 +158,3 @@ var modal =
 		this.modalBg.style.opacity = 0;
 	}
 }
-
-//================================
-// START
-//================================
-//initialize the modal
-window.addEventListener( "load", function()
-{
-	//pass in all the html elements (that need to be controlled/updated)
-	modal.init
-	(
-		document.querySelector( "#modal-yes" ),
-		document.querySelector( "#modal-no" ),
-		document.querySelector( "#modal-bg-id" ),
-		document.querySelector( "#modal-id" ),
-		document.querySelector( "#modal-label" ),
-		document.querySelector( "#modal-text" ),
-		document.querySelector( "#modal-img" )
-	);
-});
